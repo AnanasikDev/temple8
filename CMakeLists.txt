@@ -1,6 +1,6 @@
 # temple8 is a cross-platform template project for creating graphical applications.
 # It combines my older projects (NEM, Nanoite, SIF) and unifies their experience 
-# into this one, clean solution.
+# into this one, clean solution. No AI was used.
 #
 # AnanaSeek4Jam, 2026.08
 # 
@@ -27,6 +27,8 @@ if (SHOW_CONSOLE)
 else()
     set(SybSystem "/SUBSYSTEM:WINDOWS")
 endif()
+
+add_compile_options(/Zc:__cplusplus)
 
 # ------------------------------
 # Libraries
@@ -68,3 +70,10 @@ function(add_build_stats target)
 endfunction()
 
 add_build_stats(${PROJECT_NAME})
+
+# shipping exe
+add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_SOURCE_DIR}/out/ship
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different $<TARGET_FILE:${PROJECT_NAME}> ${CMAKE_SOURCE_DIR}/out/ship/${PROJECT_NAME}.exe
+    COMMENT "Shipped"
+)

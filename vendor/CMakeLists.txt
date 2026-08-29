@@ -1,6 +1,7 @@
 add_subdirectory(glad)
 add_subdirectory(ImNodeFlow)
 add_subdirectory(stb_image)
+add_subdirectory(json)
 
 include(FetchContent)
 

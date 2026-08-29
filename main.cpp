@@ -160,15 +160,20 @@ int main(void)
         ImGui_ImplGlfw_NewFrame();
         ImGui::NewFrame();
 
+        ImGui::Begin("Text");
         ImGui::Text("Hello!!!!");
         ImGui::Text("FPS: %.2f (%.2gms)", io.Framerate, io.Framerate ? 1000.0f / io.Framerate : 0.0f);
+        ImGui::End();
 
         ImGui::Separator();
 
-        const auto window_size = io.DisplaySize - ImVec2(1, 1);
-        const auto node_editor_size = window_size - ImVec2(16, 16);
+        ImVec2 vMin = ImGui::GetWindowContentRegionMin() + ImVec2(ImGui::GetWindowPos().x, ImGui::GetWindowPos().y);
+        ImVec2 vMax = ImGui::GetWindowContentRegionMax() + ImVec2(ImGui::GetWindowPos().x, ImGui::GetWindowPos().y);
+        const auto window_size = vMax - vMin; //io.DisplaySize - ImVec2(1, 1);
+        const auto node_editor_size = window_size;// - ImVec2(16, 16);
         neditor->set_size(node_editor_size);
         neditor->draw();
+        ImGui::GetForegroundDrawList()->AddRect( vMin, vMax, IM_COL32( 255, 255, 0, 255 ) );
 
         ImGui::Render();
         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
