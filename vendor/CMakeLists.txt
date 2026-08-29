@@ -1,6 +1,6 @@
 add_subdirectory(glad)
 add_subdirectory(ImNodeFlow)
-add_subdirectory(imguizmo)
+add_subdirectory(imviewguizmo)
 add_subdirectory(stb_image)
 add_subdirectory(json)
 
@@ -49,3 +49,5 @@ target_include_directories(imgui_lib PUBLIC
 
 target_link_libraries(imgui_lib PUBLIC glfw)
 target_link_libraries(imnodeflow PUBLIC imgui_lib)
+target_link_libraries(imviewguizmo INTERFACE imgui_lib)
+target_link_libraries(imviewguizmo INTERFACE glm::glm)

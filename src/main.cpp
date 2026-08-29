@@ -8,7 +8,8 @@
 #include <imgui_impl_opengl3.h>
 #include <ImNodeFlow.h>
 #include <glm/glm.hpp>
-#include <imguizmo/ImGuizmo.h>
+#define IMVIEWGUIZMO_IMPLEMENTATION
+#include <ImViewGuizmo.h>
 
 class SimpleSum : public ImFlow::BaseNode
 {
@@ -150,7 +151,7 @@ int main(void)
 
     NodeEditor* neditor = new NodeEditor(500, 500);
 
-    //editor = ax::NodeEditor::CreateEditor();
+    // editor = ax::NodeEditor::CreateEditor();
 
     /* Loop until the user closes the window */
     while (!glfwWindowShouldClose(window))
@@ -162,12 +163,16 @@ int main(void)
         ImGui_ImplGlfw_NewFrame();
         ImGui::NewFrame();
 
-        ImGuizmo::DrawGrid(), const float *projection, const float *matrix, const float gridSize, unsigned char alpha)
-
         ImGui::Begin("Text");
         ImGui::Text("Hello!!!!");
         ImGui::Text("FPS: %.2f (%.2gms)", io.Framerate, io.Framerate ? 1000.0f / io.Framerate : 0.0f);
         ImGui::ColorEdit4("Color", &color.x);
+        ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(color.x,color.y,color.z,color.w));
+        ImGui::Text("Colored!!!");
+        ImGui::PopStyleColor();
+        ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(color.x,color.y,color.z,1.0f));
+        ImGui::Text("Colored!!! full alpha");
+        ImGui::PopStyleColor();
         ImGui::End();
 
         ImGui::Separator();

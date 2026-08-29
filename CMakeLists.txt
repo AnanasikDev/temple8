@@ -39,8 +39,9 @@ target_link_libraries(${PROJECT_NAME}
         glad
         imgui_lib
         imnodeflow
-        stb_image
         glm::glm
+        imviewguizmo
+        stb_image
 
         kernel32
         user32
