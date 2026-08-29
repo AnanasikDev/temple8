@@ -13,11 +13,10 @@ cmake_minimum_required(VERSION 3.20)
 
 set(CMAKE_CXX_STANDARD 26)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
-project(temple8 LANGUAGES CXX)
+project(temple8 LANGUAGES C CXX)
 
 add_executable(${PROJECT_NAME}
-    main.cpp
-    ${CMAKE_SOURCE_DIR}/vendor/
+    src/main.cpp
 )
 
 set_target_properties(${PROJECT_NAME} PROPERTIES FOLDER "Apps")
@@ -28,7 +27,7 @@ else()
     set(SybSystem "/SUBSYSTEM:WINDOWS")
 endif()
 
-add_compile_options(/Zc:__cplusplus)
+# add_compile_options(/Zc:__cplusplus)
 
 # ------------------------------
 # Libraries
