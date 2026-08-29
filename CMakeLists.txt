@@ -27,8 +27,6 @@ else()
     set(SybSystem "/SUBSYSTEM:WINDOWS")
 endif()
 
-# add_compile_options(/Zc:__cplusplus)
-
 # ------------------------------
 # Libraries
 # ------------------------------
@@ -42,6 +40,7 @@ target_link_libraries(${PROJECT_NAME}
         imgui_lib
         imnodeflow
         stb_image
+        glm::glm
 
         kernel32
         user32

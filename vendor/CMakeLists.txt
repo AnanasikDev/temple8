@@ -1,9 +1,18 @@
 add_subdirectory(glad)
 add_subdirectory(ImNodeFlow)
+add_subdirectory(imguizmo)
 add_subdirectory(stb_image)
 add_subdirectory(json)
 
 include(FetchContent)
+
+# glm
+FetchContent_Declare(
+	glm
+	GIT_REPOSITORY	https://github.com/g-truc/glm.git
+	GIT_TAG 	8d1fd52 #refs/tags/1.0.3
+)
+FetchContent_MakeAvailable(glm)
 
 # GLFW
 set(GLFW_BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)

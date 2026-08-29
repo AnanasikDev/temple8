@@ -7,6 +7,8 @@
 #include <imgui_impl_glfw.h>
 #include <imgui_impl_opengl3.h>
 #include <ImNodeFlow.h>
+#include <glm/glm.hpp>
+#include <imguizmo/ImGuizmo.h>
 
 class SimpleSum : public ImFlow::BaseNode
 {
@@ -70,7 +72,6 @@ public:
 
 };
 
-
 /* Node editor that sets up the grid to place nodes */
 struct NodeEditor : ImFlow::BaseNode
 {
@@ -107,13 +108,13 @@ struct NodeEditor : ImFlow::BaseNode
     }
 };
 
-
-
 int main(void)
 {
     //ax::NodeEditor::EditorContext* editor = nullptr;
 
     GLFWwindow* window;
+
+    glm::vec4 color;
 
     /* Initialize the library */
     if (!glfwInit())
@@ -161,9 +162,12 @@ int main(void)
         ImGui_ImplGlfw_NewFrame();
         ImGui::NewFrame();
 
+        ImGuizmo::DrawGrid(), const float *projection, const float *matrix, const float gridSize, unsigned char alpha)
+
         ImGui::Begin("Text");
         ImGui::Text("Hello!!!!");
         ImGui::Text("FPS: %.2f (%.2gms)", io.Framerate, io.Framerate ? 1000.0f / io.Framerate : 0.0f);
+        ImGui::ColorEdit4("Color", &color.x);
         ImGui::End();
 
         ImGui::Separator();
