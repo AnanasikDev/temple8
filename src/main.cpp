@@ -8,8 +8,11 @@
 #include <imgui_impl_opengl3.h>
 #include <ImNodeFlow.h>
 #include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
 #define IMVIEWGUIZMO_IMPLEMENTATION
 #include <ImViewGuizmo.h>
+#include <ImGuizmo.h>
 
 class SimpleSum : public ImFlow::BaseNode
 {
@@ -153,6 +156,11 @@ int main(void)
 
     // editor = ax::NodeEditor::CreateEditor();
 
+    glm::vec3 camera_position;
+    glm::quat camera_rotation(1, 0, 0, 0);
+    glm::vec3 pivot;
+    bool first_frame = false;
+
     /* Loop until the user closes the window */
     while (!glfwWindowShouldClose(window))
     {
@@ -163,6 +171,22 @@ int main(void)
         ImGui_ImplGlfw_NewFrame();
         ImGui::NewFrame();
 
+
+        // --- after ImGui::NewFrame(), before ImGui::Render() ---
+        ImGuizmo::BeginFrame();
+
+        // imguizmo example
+        static glm::mat4 model(1.0f);
+        glm::mat4 view = glm::lookAt(glm::vec3(4, 4, 4), glm::vec3(0), glm::vec3(0, 1, 0));
+
+        ImGuiIO& io = ImGui::GetIO();
+        glm::mat4 proj = glm::perspective(glm::radians(45.0f), io.DisplaySize.x / io.DisplaySize.y, 0.1f, 100.0f);
+
+        ImGuizmo::SetRect(0, 0, io.DisplaySize.x, io.DisplaySize.y);
+        ImGuizmo::Manipulate(glm::value_ptr(view), glm::value_ptr(proj),
+                             ImGuizmo::TRANSLATE, ImGuizmo::WORLD, glm::value_ptr(model));
+        
+        //
         ImGui::Begin("Text");
         ImGui::Text("Hello!!!!");
         ImGui::Text("FPS: %.2f (%.2gms)", io.Framerate, io.Framerate ? 1000.0f / io.Framerate : 0.0f);
@@ -173,9 +197,24 @@ int main(void)
         ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(color.x,color.y,color.z,1.0f));
         ImGui::Text("Colored!!! full alpha");
         ImGui::PopStyleColor();
+
+        ImGui::DragFloat3("Camera position", &camera_position.x, 0.01f);
+        ImGui::DragFloat4("Camera rotation", &camera_rotation.x, 0.01f);
+        camera_rotation = glm::normalize(camera_rotation);
+        ImGui::DragFloat3("Pivot", &pivot.x, 0.01f);
         ImGui::End();
 
-        ImGui::Separator();
+        ImGui::Begin("Gizmo", nullptr, ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoTitleBar);
+        ImVec2 pos = ImVec2(ImGui::GetMainViewport()->Size.x - 300, 0);
+        if (first_frame)
+        {
+            ImGui::SetWindowPos(pos);
+        }
+        ImVec2 size = ImGui::GetWindowSize();
+        ImVec2 gizmo_position = ImGui::GetWindowPos() + size / 2.0f;
+        if (ImViewGuizmo::Rotate(camera_position, camera_rotation, pivot, gizmo_position)) {}
+
+        ImGui::End();
 
         ImVec2 vMin = ImGui::GetWindowContentRegionMin() + ImVec2(ImGui::GetWindowPos().x, ImGui::GetWindowPos().y);
         ImVec2 vMax = ImGui::GetWindowContentRegionMax() + ImVec2(ImGui::GetWindowPos().x, ImGui::GetWindowPos().y);
@@ -189,7 +228,7 @@ int main(void)
         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
         glfwSwapBuffers(window);
-
+        first_frame = true;
     }
     ImGui_ImplOpenGL3_Shutdown();
     ImGui_ImplGlfw_Shutdown();

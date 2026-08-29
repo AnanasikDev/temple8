@@ -41,6 +41,7 @@ target_link_libraries(${PROJECT_NAME}
         imnodeflow
         glm::glm
         imviewguizmo
+        imguizmo
         stb_image
 
         kernel32
